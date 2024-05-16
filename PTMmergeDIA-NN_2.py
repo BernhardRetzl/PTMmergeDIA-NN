@@ -10,6 +10,11 @@ import glob
 # searches a FASTA-file for proteins listed in the Protein.Id table
 df = pd.read_csv('report.pr_matrix.tsv', sep='\t')
 # df = pd.read_excel('test.xlsx')
+
+df = df[df['Modified.Sequence'].str.contains('Mod', na=False)]
+
+
+# df = pd.read_excel('test.xlsx')
 uni_prot_proteins = list(df['Protein.Ids'])
 uni_prot_proteins = {i: '' for i in uni_prot_proteins}
 
@@ -38,25 +43,26 @@ def return_length(string, position, protein_ids):
     uni_mod_pattern = r"(\d+)"
     parts = re.split(pattern, string)
     parts = [i for i in parts if i]
-    if len(parts) == 1 or 0:
-        return
-    else:
-        length = np.array([len(i) for i in parts][0:-1])
-        length = length.cumsum()+position
-        length = [str(i) for i in length.tolist()]
+    # if len(parts) == 1 or 0:
+    #     return
+    # else:
+    length = np.array([len(i) for i in parts])
+    length = length.cumsum()+position
+    length = [str(i) for i in length.tolist()]
 
-        aa_of_interest = [i[-1] for i in parts][0:-1]
+    aa_of_interest = [i[-1] for i in parts]
 
-        uni_mod_matches = re.findall(uni_mod_pattern, string)
+    uni_mod_matches = re.findall(uni_mod_pattern, string)
 
 
 
-        protein_ids = [protein_ids] * len(length)
-        to_return = list(zip(protein_ids, length, aa_of_interest, uni_mod_matches))
-        to_return = ['-'.join(i) for i in to_return]
-        return to_return
+    protein_ids = [protein_ids] * len(length)
+    to_return = list(zip(protein_ids, length, aa_of_interest, uni_mod_matches))
+    to_return = ['-'.join(i) for i in to_return]
+    print(to_return)
+    return to_return
 
-        return '-'.join((protein_ids, '-'.join(length), '-'.join(aa_of_interest), '-'.join(uni_mod_matches)))
+    return '-'.join((protein_ids, '-'.join(length), '-'.join(aa_of_interest), '-'.join(uni_mod_matches)))
 
 
 corrected_df = pd.DataFrame()
