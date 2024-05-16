@@ -8,7 +8,8 @@ import glob
 #--------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------
 # searches a FASTA-file for proteins listed in the Protein.Id table
-df = pd.read_csv('report.pr_matrix.tsv', sep='\t')
+# df = pd.read_csv('report.pr_matrix.tsv', sep='\t')
+df = pd.read_excel('test.xlsx')
 uni_prot_proteins = list(df['Protein.Ids'])
 uni_prot_proteins = {i: '' for i in uni_prot_proteins}
 
